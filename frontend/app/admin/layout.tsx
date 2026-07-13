@@ -7,6 +7,7 @@ import { isAdminLoggedIn, logout } from "@/lib/admin-api";
 
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "نظرة عامة" },
+  { href: "/admin/products", label: "المنتجات" },
   { href: "/admin/orders", label: "الطلبات" },
   { href: "/admin/profit-calculator", label: "حاسبة الربح" },
   { href: "/", label: "المتجر" },

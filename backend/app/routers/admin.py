@@ -14,7 +14,9 @@ from app.schemas.admin import (
     ProfitCalcIn, ProfitCalcOut,
     OrderListItem, OrderListResponse, OrderDetail, StatusUpdate,
     ClickTrackIn, ClickTrackOut,
+    ProductCreate, ProductUpdate, ProductListResponse,
 )
+from app.models.product import Product
 from app.services.geo import is_valid_morocco_visitor
 
 logger = logging.getLogger(__name__)
@@ -411,3 +413,123 @@ async def track_click(data: ClickTrackIn, request: Request, db: AsyncSession = D
     db.add(click)
     await db.flush()
     return ClickTrackOut(tracked=True)
+
+
+# ==================== PRODUCT MANAGEMENT ====================
+
+@router.get("/products", response_model=list[ProductListResponse])
+async def list_all_products(
+    token: str = Depends(_require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """List all products (including inactive and upsell items) for admin management"""
+    result = await db.execute(select(Product).order_by(Product.created_at.desc()))
+    products = result.scalars().all()
+    return products
+
+
+@router.post("/products", response_model=ProductListResponse)
+async def create_product(
+    data: ProductCreate,
+    token: str = Depends(_require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Create a new product"""
+    # Check if slug already exists
+    existing = await db.execute(select(Product).where(Product.slug == data.slug))
+    if existing.scalar_one_or_none():
+        raise HTTPException(status_code=400, detail="Product slug already exists")
+    
+    product = Product(
+        name=data.name,
+        slug=data.slug,
+        description=data.description,
+        price=data.price,
+        offer_price=data.offer_price,
+        has_offer=data.has_offer,
+        images=data.images,
+        sizes=data.sizes or ["S", "M", "L", "XL"],
+        category=data.category,
+        is_active=data.is_active,
+        is_featured=data.is_featured,
+        is_upsell=data.is_upsell,
+        rating=data.rating,
+        reviews_count=data.reviews_count,
+    )
+    db.add(product)
+    await db.flush()
+    return product
+
+
+@router.get("/products/{product_id}", response_model=ProductListResponse)
+async def get_product_admin(
+    product_id: str,
+    token: str = Depends(_require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get a single product for admin management"""
+    try:
+        uid = uuid.UUID(product_id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid product ID")
+    
+    result = await db.execute(select(Product).where(Product.id == uid))
+    product = result.scalar_one_or_none()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+
+@router.put("/products/{product_id}", response_model=ProductListResponse)
+async def update_product(
+    product_id: str,
+    data: ProductUpdate,
+    token: str = Depends(_require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Update an existing product"""
+    try:
+        uid = uuid.UUID(product_id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid product ID")
+    
+    result = await db.execute(select(Product).where(Product.id == uid))
+    product = result.scalar_one_or_none()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    # Check if new slug conflicts with another product
+    if data.slug and data.slug != product.slug:
+        existing = await db.execute(select(Product).where(Product.slug == data.slug))
+        if existing.scalar_one_or_none():
+            raise HTTPException(status_code=400, detail="Product slug already exists")
+    
+    # Update only provided fields
+    update_data = data.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(product, field, value)
+    
+    await db.flush()
+    return product
+
+
+@router.delete("/products/{product_id}")
+async def delete_product(
+    product_id: str,
+    token: str = Depends(_require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Delete a product"""
+    try:
+        uid = uuid.UUID(product_id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid product ID")
+    
+    result = await db.execute(select(Product).where(Product.id == uid))
+    product = result.scalar_one_or_none()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    await db.delete(product)
+    await db.flush()
+    return {"status": "deleted", "product_id": str(uid)}

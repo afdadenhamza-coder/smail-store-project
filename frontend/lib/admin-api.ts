@@ -199,6 +199,104 @@ export async function updateOrderStatus(id: string, status: string): Promise<voi
   });
 }
 
+// Product Management
+
+export interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  offer_price?: number;
+  has_offer: boolean;
+  images: string[];
+  category?: string;
+  is_active: boolean;
+  is_featured: boolean;
+  is_upsell: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProductCreateData {
+  name: string;
+  slug: string;
+  description?: string;
+  price: number;
+  offer_price?: number;
+  has_offer: boolean;
+  images: string[];
+  sizes?: string[];
+  category?: string;
+  is_active: boolean;
+  is_featured: boolean;
+  is_upsell: boolean;
+  rating?: number;
+  reviews_count?: number;
+}
+
+export interface ProductUpdateData {
+  name?: string;
+  slug?: string;
+  description?: string;
+  price?: number;
+  offer_price?: number;
+  has_offer?: boolean;
+  images?: string[];
+  sizes?: string[];
+  category?: string;
+  is_active?: boolean;
+  is_featured?: boolean;
+  is_upsell?: boolean;
+  rating?: number;
+  reviews_count?: number;
+}
+
+export async function fetchAllProducts(): Promise<Product[]> {
+  const res = await authFetch(`${API_BASE}/api/admin/products`);
+  return res.json();
+}
+
+export async function fetchProduct(id: string): Promise<Product> {
+  const res = await authFetch(`${API_BASE}/api/admin/products/${id}`);
+  return res.json();
+}
+
+export async function createProduct(data: ProductCreateData): Promise<Product> {
+  const res = await authFetch(`${API_BASE}/api/admin/products`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || "Failed to create product");
+  }
+  return res.json();
+}
+
+export async function updateProduct(id: string, data: ProductUpdateData): Promise<Product> {
+  const res = await authFetch(`${API_BASE}/api/admin/products/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || "Failed to update product");
+  }
+  return res.json();
+}
+
+export async function deleteProduct(id: string): Promise<void> {
+  const res = await authFetch(`${API_BASE}/api/admin/products/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || "Failed to delete product");
+  }
+}
+
 export async function trackClick(path: string, sessionId?: string): Promise<void> {
   try {
     await fetch(`${API_BASE}/api/admin/track`, {
