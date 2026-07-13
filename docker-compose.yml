@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    container_name: smailstore-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - smailstore-network
+
+  frontend:
+    build: ./frontend
+    container_name: smailstore-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - backend
+    networks:
+      - smailstore-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: smailstore-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: smailstore
+      POSTGRES_USER: smailstore_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smailstore_user -d smailstore"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - smailstore-network
+
+volumes:
+  postgres_data:
+
+networks:
+  smailstore-network:
+    driver: bridge

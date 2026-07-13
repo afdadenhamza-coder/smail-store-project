@@ -1,0 +1,2 @@
+Timestamp,Order Number,Customer Name,Customer Phone,Items (JSON),Total (MAD),Upsell Accepted,Event ID,Client IP
+2024-01-15 14:30:00,SMA-2024001,أحمد البناء,0612345678,"[{""product_id"":""uuid"",""name"":""تيشيرت كلاسيك أسود"",""size"":""M"",""qty"":1,""price"":249}]",249,FALSE,uuid-here,192.168.1.1

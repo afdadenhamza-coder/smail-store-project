@@ -1,0 +1,133 @@
+
+> frontend@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 5.2s
+ ○ Compiling /collections/[slug] ...
+ ✓ Compiled /collections/[slug] in 8.6s (591 modules)
+ ✓ Compiled in 1623ms (291 modules)
+ GET /collections/pants 200 in 12164ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 1360ms (332 modules)
+ GET /favicon.ico 200 in 2111ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1103ms (585 modules)
+ ○ Compiling /product/[id] ...
+ ✓ Compiled /product/[id] in 1090ms (593 modules)
+ ⨯ Error: Cannot find module './vendor-chunks/next.js'
+Require stack:
+- C:\Users\dell\Documents\New OpenCode Project\frontend\.next\server\webpack-runtime.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\.next\server\app\product\[id]\page.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\require.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\load-components.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\build\utils.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\dev\static-paths-worker.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\compiled\jest-worker\processChild.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1383:15)
+    at C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
+    at Function._load (node:internal/modules/cjs/loader:1192:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1463:12)
+    at mod.require (C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:147:16) {
+  type: 'Error',
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\.next\\server\\webpack-runtime.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\.next\\server\\app\\product\\[id]\\page.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\server\\dev\\static-paths-worker.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\compiled\\jest-worker\\processChild.js'
+  ],
+  page: '/product/prod-3'
+}
+ ○ Compiling /_error ...
+Watchpack Error (initial scan): Error: EINVAL: invalid argument, lstat 'C:\DumpStack.log.tmp'
+Watchpack Error (initial scan): Error: EINVAL: invalid argument, lstat 'C:\System Volume Information'
+Watchpack Error (initial scan): Error: EINVAL: invalid argument, lstat 'C:\hiberfil.sys'
+Watchpack Error (initial scan): Error: EINVAL: invalid argument, lstat 'C:\pagefile.sys'
+Watchpack Error (initial scan): Error: EINVAL: invalid argument, lstat 'C:\swapfile.sys'
+ ✓ Compiled /_error in 5s (819 modules)
+Watchpack Error (initial scan): Error: EINVAL: invalid argument, lstat 'C:\DumpStack.log.tmp'
+Watchpack Error (initial scan): Error: EINVAL: invalid argument, lstat 'C:\System Volume Information'
+Watchpack Error (initial scan): Error: EINVAL: invalid argument, lstat 'C:\hiberfil.sys'
+Watchpack Error (initial scan): Error: EINVAL: invalid argument, lstat 'C:\pagefile.sys'
+Watchpack Error (initial scan): Error: EINVAL: invalid argument, lstat 'C:\swapfile.sys'
+ ⨯ Error: Cannot find module './vendor-chunks/zustand.js'
+Require stack:
+- C:\Users\dell\Documents\New OpenCode Project\frontend\.next\server\webpack-runtime.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\.next\server\app\product\[id]\page.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\require.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\load-components.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\build\utils.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\dev\static-paths-worker.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\compiled\jest-worker\processChild.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1383:15)
+    at C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
+    at Function._load (node:internal/modules/cjs/loader:1192:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1463:12)
+    at mod.require (C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:147:16) {
+  type: 'Error',
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\.next\\server\\webpack-runtime.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\.next\\server\\app\\product\\[id]\\page.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\server\\dev\\static-paths-worker.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\compiled\\jest-worker\\processChild.js'
+  ],
+  page: '/product/prod-2'
+}
+ ⨯ Error: Cannot find module './vendor-chunks/zustand.js'
+Require stack:
+- C:\Users\dell\Documents\New OpenCode Project\frontend\.next\server\webpack-runtime.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\.next\server\app\product\[id]\page.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\require.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\load-components.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\build\utils.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\dev\static-paths-worker.js
+- C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\compiled\jest-worker\processChild.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1383:15)
+    at C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
+    at Function._load (node:internal/modules/cjs/loader:1192:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1463:12)
+    at mod.require (C:\Users\dell\Documents\New OpenCode Project\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:147:16) {
+  type: 'Error',
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\.next\\server\\webpack-runtime.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\.next\\server\\app\\product\\[id]\\page.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\server\\dev\\static-paths-worker.js',
+    'C:\\Users\\dell\\Documents\\New OpenCode Project\\frontend\\node_modules\\next\\dist\\compiled\\jest-worker\\processChild.js'
+  ],
+  page: '/product/prod-2'
+}
+ GET /product/prod-2 500 in 1015ms
+ GET / 200 in 406ms
+ ○ Compiling /_not-found ...
+
+C:\Users\dell\Documents\New OpenCode Project\frontend>

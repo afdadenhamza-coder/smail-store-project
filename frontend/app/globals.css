@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #050505;
+  --foreground: #f7efe7;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #050505;
+}
+
+body {
+  color: var(--foreground);
+  background:
+    radial-gradient(circle at top left, rgba(192, 112, 64, 0.16), transparent 28%),
+    radial-gradient(circle at 88% 10%, rgba(255, 203, 124, 0.12), transparent 24%),
+    linear-gradient(135deg, #040404 0%, #0b0b0d 45%, #060606 100%);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08) 0 1px, transparent 1px),
+    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.05) 0 1px, transparent 1px);
+  background-size: 18px 18px, 24px 24px;
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  z-index: 0;
+}
+
+@font-face {
+  font-family: "Arabic Display";
+  src: local("Noto Naskh Arabic"), local("Traditional Arabic"), local("Geeza Pro"), local("Baghdad");
+  font-weight: 700;
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+p, span, li, a, button {
+  letter-spacing: 0.005em;
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #0b0b0d inset;
+  -webkit-text-fill-color: #f7efe7;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::selection {
+  background: rgba(192, 112, 64, 0.35);
+  color: #fff8ef;
+}
+
+.glass-panel {
+  @apply border border-white/10 bg-[#101116]/90 backdrop-blur-xl shadow-[0_16px_40px_rgba(0,0,0,0.22)];
+}
+
+.section-shell {
+  @apply rounded-[28px] border border-white/10 bg-[linear-gradient(135deg,rgba(16,17,23,0.96),rgba(9,9,12,0.96))] shadow-[0_24px_70px_rgba(0,0,0,0.28)] backdrop-blur-xl;
+}
