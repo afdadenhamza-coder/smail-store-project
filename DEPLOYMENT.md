@@ -47,7 +47,7 @@ This guide will help you deploy the Smail Store project to Vercel for free.
    - **Root Directory:** `backend`
    - **Environment:** `Python 3`
    - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** (leave empty)
+   - **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port 8000`
 4. **Add Environment Variables:**
    - Click **Advanced** → **Add Environment Variable**
    - Add each variable below:
