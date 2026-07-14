@@ -25,12 +25,12 @@ This guide will help you deploy the Smail Store project to Vercel for free.
    - Build Command: `pip install -r requirements.txt`
    - Start Command: (leave empty or use default)
    - **Note:** Migrations run automatically on app startup 🚀
-   - Environment Variables (add these):
+   - Environment Variables (add these - **DO NOT SKIP THIS**):
      ```
-     DATABASE_URL=<PostgreSQL connection string from Render>
+     DATABASE_URL=postgresql+asyncpg://postgres:<password>@<host>:5432/<dbname>
      APP_ENV=production
-     SECRET_KEY=<generate secure random string>
-     CORS_ORIGINS=https://your-vercel-domain.vercel.app
+     SECRET_KEY=<generate secure random string - min 32 chars>
+     CORS_ORIGINS=https://your-vercel-domain.vercel.app,http://localhost:3000
      ADMIN_EMAIL=admin@smailstore.shop
      ADMIN_PASSWORD=<secure password>
      META_PIXEL_ID=your_pixel_id
@@ -40,6 +40,7 @@ This guide will help you deploy the Smail Store project to Vercel for free.
      SNAPCHAT_PIXEL_ID=your_id
      SNAPCHAT_ACCESS_TOKEN=your_token
      ```
+   - ⚠️ **Important**: Make sure DATABASE_URL starts with `postgresql+asyncpg://` (not `postgresql://`)
 
 5. **Note the backend URL** - You'll need this for the frontend
 
