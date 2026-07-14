@@ -22,8 +22,9 @@ This guide will help you deploy the Smail Store project to Vercel for free.
 4. **Create New → Web Service**
    - Select your `smail-store-project` repository
    - Root Directory: `backend`
-   - Build Command: `pip install -r requirements.txt && alembic upgrade head`
-   - Start Command: `uvicorn app.main:app --host 0.0.0.0 --port 10000`
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: (leave empty or use default)
+   - **Note:** Migrations run automatically on app startup 🚀
    - Environment Variables (add these):
      ```
      DATABASE_URL=<PostgreSQL connection string from Render>

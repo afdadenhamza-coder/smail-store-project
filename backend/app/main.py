@@ -8,6 +8,8 @@ from app.config import get_settings
 from app.routers import products, orders, webhooks, admin
 from app.database import engine
 from app.models.product import Base
+from alembic import command
+from alembic.config import Config
 
 settings = get_settings()
 logging.basicConfig(level=logging.INFO)
@@ -19,6 +21,15 @@ async def lifespan(app: FastAPI):
     logger.info("Starting Smail Store API")
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+    
+    # Run Alembic migrations
+    try:
+        alembic_cfg = Config("alembic.ini")
+        command.upgrade(alembic_cfg, "head")
+        logger.info("Migrations completed successfully")
+    except Exception as e:
+        logger.warning(f"Migration error (may be expected on first run): {e}")
+    
     yield
     logger.info("Shutting down Smail Store API")
 
