@@ -22,20 +22,26 @@ async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     
-    # Run Alembic migrations
+    # Run Alembic migrations (non-blocking, won't crash if fails)
     try:
         import pathlib
         alembic_ini_path = pathlib.Path(__file__).parent.parent / "alembic.ini"
         if alembic_ini_path.exists():
             alembic_cfg = Config(str(alembic_ini_path))
-            alembic_cfg.set_main_option("sqlalchemy.url", settings.database_url)
-            command.upgrade(alembic_cfg, "head")
-            logger.info("Migrations completed successfully")
+            # Only set SQLAlchemy URL if DATABASE_URL is available
+            if settings.database_url:
+                alembic_cfg.set_main_option("sqlalchemy.url", settings.database_url.replace("asyncpg", ""))
+            try:
+                command.upgrade(alembic_cfg, "head")
+                logger.info("✅ Migrations completed successfully")
+            except Exception as migration_err:
+                logger.warning(f"⚠️ Migration error (app will still start): {migration_err}")
         else:
-            logger.warning(f"alembic.ini not found at {alembic_ini_path}, skipping migrations")
+            logger.info("ℹ️ alembic.ini not found, skipping migrations")
     except Exception as e:
-        logger.warning(f"Migration error: {e}")
+        logger.warning(f"⚠️ Startup migration check failed: {e}")
     
+    logger.info("✅ API is ready!")
     yield
     logger.info("Shutting down Smail Store API")
 
