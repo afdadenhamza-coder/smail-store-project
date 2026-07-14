@@ -2,13 +2,6 @@
   "version": 2,
   "name": "smail-store",
   "buildCommand": "cd frontend && npm run build",
-  "startCommand": "cd frontend && npm run start",
-  "env": {
-    "NEXT_PUBLIC_API_URL": "@smail_store_api_url",
-    "NEXT_PUBLIC_META_PIXEL_ID": "@smail_store_meta_pixel",
-    "NEXT_PUBLIC_TIKTOK_PIXEL_CODE": "@smail_store_tiktok_pixel",
-    "NEXT_PUBLIC_SNAPCHAT_PIXEL_ID": "@smail_store_snapchat_pixel",
-    "NEXT_PUBLIC_SITE_URL": "@smail_store_site_url"
-  },
+  "outputDirectory": "frontend/.next",
   "regions": ["ams"]
 }
