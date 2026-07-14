@@ -13,6 +13,10 @@ export const metadata: Metadata = {
   title: "Smail Store | جودة عالمية، روح مغربية",
   description:
     "أول ماركة مغربية ديال الستريوير بشهادة الجودة. تيشيرتات، هوديات، بناطل و جواكيط. التوصيل ف 3-5 أيام و الدفع عند الإستلام.",
+  icons: {
+    icon: "/favicon.jpg",
+    apple: "/favicon.jpg",
+  },
 };
 
 export default function RootLayout({

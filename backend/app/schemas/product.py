@@ -16,6 +16,7 @@ class ProductOut(BaseModel):
     category: Optional[str] = None
     description: Optional[str] = None
     is_upsell: bool = False
+    is_featured: bool = False
     rating: float = 0.0
     reviews_count: int = 0
 

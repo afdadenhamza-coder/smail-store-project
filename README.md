@@ -10,6 +10,7 @@ A modern, high-performance e-commerce platform built for Moroccan fashion retail
 ## ✨ Features
 
 ### 🏪 Frontend (Next.js + React)
+
 - ⚡ **Lightning-fast** product browsing with collections
 - 🛒 **Smooth checkout** flow optimized for mobile
 - 🎯 **Conversion optimization** - Upsell products, social proof, urgency timers
@@ -19,6 +20,7 @@ A modern, high-performance e-commerce platform built for Moroccan fashion retail
 - 📊 **Pixel tracking** - Meta, TikTok, Snapchat integration
 
 ### 👨‍💼 Admin Dashboard
+
 - 📈 **Real-time analytics** - Orders, revenue, traffic stats
 - 📦 **Complete product management** - CRUD operations
 - 🧮 **Profit calculator** - Calculate margins with all costs
@@ -27,6 +29,7 @@ A modern, high-performance e-commerce platform built for Moroccan fashion retail
 - 📊 **Performance metrics** - Conversion rates, AOV, etc.
 
 ### 🔧 Backend (FastAPI + PostgreSQL)
+
 - ⚡ **Async/await** architecture for high performance
 - 🔒 **Secure API** with authentication
 - 📡 **Webhook support** for order processing
@@ -39,6 +42,7 @@ A modern, high-performance e-commerce platform built for Moroccan fashion retail
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Framework:** Next.js 14 (App Router)
 - **Styling:** Tailwind CSS
 - **State:** Zustand
@@ -47,6 +51,7 @@ A modern, high-performance e-commerce platform built for Moroccan fashion retail
 - **Language:** TypeScript
 
 ### Backend
+
 - **Framework:** FastAPI
 - **Database:** PostgreSQL + SQLAlchemy
 - **Async:** AsyncIO + AsyncPG
@@ -54,6 +59,7 @@ A modern, high-performance e-commerce platform built for Moroccan fashion retail
 - **Server:** Uvicorn
 
 ### Deployment
+
 - **Frontend:** Vercel (Free)
 - **Backend:** Render.com / Railway.app
 - **Database:** Neon / Supabase (Free PostgreSQL)
@@ -63,6 +69,7 @@ A modern, high-performance e-commerce platform built for Moroccan fashion retail
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js 18+ and npm
 - Python 3.9+
 - PostgreSQL (or use free cloud database)
@@ -174,6 +181,7 @@ smail-store-project/
 ## 🌐 API Endpoints
 
 ### Products
+
 - `GET /api/products` - List all active products
 - `GET /api/products/{id}` - Get product details
 - `GET /api/admin/products` - List all products (admin)
@@ -182,12 +190,14 @@ smail-store-project/
 - `DELETE /api/admin/products/{id}` - Delete product (admin)
 
 ### Orders
+
 - `POST /api/orders` - Create order
 - `GET /api/admin/orders` - List orders (admin)
 - `GET /api/admin/orders/{id}` - Get order details (admin)
 - `PUT /api/admin/orders/{id}/status` - Update status (admin)
 
 ### Admin
+
 - `POST /api/admin/login` - Login
 - `POST /api/admin/logout` - Logout
 - `GET /api/admin/stats` - Dashboard stats
@@ -210,6 +220,7 @@ smail-store-project/
 ## 📊 Database Schema
 
 ### Products Table
+
 - `id` (UUID)
 - `name` (String) - Product name
 - `slug` (String) - URL-friendly slug
@@ -225,6 +236,7 @@ smail-store-project/
 - `reviews_count` (Integer)
 
 ### Orders Table
+
 - `id` (UUID)
 - `order_number` (String)
 - `customer_name` (String)
@@ -241,6 +253,7 @@ smail-store-project/
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 
 **Quick Deploy:**
+
 1. Push to GitHub ✓ (Already done)
 2. Deploy frontend to Vercel
 3. Deploy backend to Render.com / Railway
@@ -253,12 +266,14 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 ## 🧪 Testing
 
 ### Backend
+
 ```bash
 cd backend
 pytest
 ```
 
 ### Frontend
+
 ```bash
 cd frontend
 npm test
@@ -271,6 +286,7 @@ npm test
 See [.env.example](./.env.example) for the complete list.
 
 **Key variables:**
+
 ```
 DATABASE_URL=postgresql://user:pass@localhost/dbname
 NEXT_PUBLIC_API_URL=http://localhost:8000
@@ -284,16 +300,19 @@ ADMIN_PASSWORD=secure-password
 ## 🐛 Troubleshooting
 
 ### API Connection Issues
+
 - Ensure backend is running
 - Check `NEXT_PUBLIC_API_URL` is correct
 - Verify CORS_ORIGINS includes your domain
 
 ### Database Connection Failed
+
 - Check `DATABASE_URL` format
 - Verify PostgreSQL is running
 - Check firewall rules
 
 ### Build Fails on Vercel
+
 - Clear build cache
 - Check Node.js version
 - Verify environment variables
@@ -312,6 +331,7 @@ ADMIN_PASSWORD=secure-password
 ## 🤝 Contributing
 
 Contributions are welcome! Please:
+
 1. Fork the repository
 2. Create a feature branch
 3. Commit your changes
@@ -328,6 +348,7 @@ This project is proprietary. All rights reserved.
 ## 👤 Author
 
 **Afdaden Hamza**
+
 - GitHub: [@afdadenhamza-coder](https://github.com/afdadenhamza-coder)
 - Email: afdadenhamza@gmail.com
 
@@ -349,6 +370,7 @@ This project is proprietary. All rights reserved.
 ## 💰 Support
 
 If this project helped you, consider:
+
 - ⭐ Starring the repository
 - 📢 Sharing with others
 - 💬 Providing feedback

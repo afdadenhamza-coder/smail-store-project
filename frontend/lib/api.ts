@@ -9,10 +9,10 @@ export interface Product {
   has_offer: boolean;
   images: string[];
   sizes: string[];
-  category: string;
-  description: string;
+  category: string | null;
+  description: string | null;
   is_upsell: boolean;
-  is_featured?: boolean;
+  is_featured: boolean;
   rating: number;
   reviews_count: number;
 }
@@ -46,9 +46,27 @@ export async function fetchProducts(): Promise<Product[]> {
   return res.json();
 }
 
+export async function fetchFeaturedProducts(): Promise<Product[]> {
+  const res = await fetch(`${API_BASE}/api/products/featured`);
+  if (!res.ok) throw new Error("Failed to fetch featured products");
+  return res.json();
+}
+
 export async function fetchProduct(id: string): Promise<Product> {
   const res = await fetch(`${API_BASE}/api/products/${id}`);
   if (!res.ok) throw new Error("Product not found");
+  return res.json();
+}
+
+export async function fetchProductBySlug(slug: string): Promise<Product> {
+  const res = await fetch(`${API_BASE}/api/products/by-slug/${slug}`);
+  if (!res.ok) throw new Error("Product not found");
+  return res.json();
+}
+
+export async function fetchProductsByCategory(category: string): Promise<Product[]> {
+  const res = await fetch(`${API_BASE}/api/products/by-category/${category}`);
+  if (!res.ok) throw new Error("Failed to fetch products");
   return res.json();
 }
 

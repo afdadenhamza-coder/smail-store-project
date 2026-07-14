@@ -2,7 +2,8 @@ import uuid
 import logging
 from datetime import datetime, timedelta, timezone
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, Request, Header
+import aiofiles
+from fastapi import APIRouter, Depends, HTTPException, Request, Header, UploadFile, File
 from sqlalchemy import select, func, cast, Date
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db
@@ -415,6 +416,21 @@ async def track_click(data: ClickTrackIn, request: Request, db: AsyncSession = D
     return ClickTrackOut(tracked=True)
 
 
+@router.post("/upload")
+async def upload_image(file: UploadFile = File(...), token: str = Depends(_require_auth)):
+    """Upload a product image. Returns the URL path."""
+    ext = file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else "jpg"
+    allowed = {"jpg", "jpeg", "png", "webp", "gif"}
+    if ext not in allowed:
+        raise HTTPException(status_code=400, detail=f"Unsupported file type: .{ext}")
+    filename = f"{uuid.uuid4().hex}.{ext}"
+    path = f"uploads/{filename}"
+    async with aiofiles.open(path, "wb") as f:
+        content = await file.read()
+        await f.write(content)
+    return {"url": f"http://localhost:8000/uploads/{filename}"}
+
+
 # ==================== PRODUCT MANAGEMENT ====================
 
 @router.get("/products", response_model=list[ProductListResponse])
@@ -506,10 +522,23 @@ async def update_product(
     
     # Update only provided fields
     update_data = data.model_dump(exclude_unset=True)
+    logger.info(f"Updating product {product_id} with fields: {list(update_data.keys())}")
     for field, value in update_data.items():
-        setattr(product, field, value)
+        try:
+            setattr(product, field, value)
+        except Exception as e:
+            logger.error(f"Failed to set {field}={value!r}: {e}")
+            raise
     
-    await db.flush()
+    try:
+        await db.flush()
+    except Exception as e:
+        logger.error(f"Flush failed: {e}")
+        raise
+    
+    # Commit the changes
+    await db.commit()
+    await db.refresh(product)
     return product
 
 

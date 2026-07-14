@@ -1,7 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { products } from "@/data/products";
+import { fetchProductsByCategory, Product } from "@/lib/api";
 import ProductCard from "@/components/ProductCard";
 
 const categoryNames: Record<string, string> = {
@@ -27,12 +28,26 @@ const categoryHeroImages: Record<string, string> = {
 
 export default function CollectionsPage() {
   const { slug } = useParams<{ slug: string }>();
+  const [categoryProducts, setCategoryProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const categoryName = categoryNames[slug] || slug;
   const description = categoryDescriptions[slug] || "";
   const heroImage = categoryHeroImages[slug] || "/images/Collection.jpg";
-  const categoryProducts = products.filter(
-    (p) => p.category === slug && !p.is_upsell
-  );
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try {
+        const products = await fetchProductsByCategory(slug);
+        setCategoryProducts(products);
+      } catch {
+        const { products: staticProducts } = await import("@/data/products");
+        setCategoryProducts(staticProducts.filter((p) => p.category === slug && !p.is_upsell));
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [slug]);
 
   const categories = Object.entries(categoryNames);
 

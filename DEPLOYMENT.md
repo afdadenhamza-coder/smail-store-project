@@ -5,6 +5,7 @@
 This guide will help you deploy the Smail Store project to Vercel for free.
 
 ### Prerequisites
+
 - GitHub account (already done ✓)
 - Vercel account (free at https://vercel.com)
 - Backend API deployed (separate from frontend)
@@ -74,6 +75,7 @@ NEXT_PUBLIC_SITE_URL=https://your-project.vercel.app
 ```
 
 Replace:
+
 - `your-backend-url.render.com` - Your Render backend URL
 - `your_meta_pixel_id` - Your Meta pixel ID
 - Other pixel/tracking IDs as needed
@@ -89,6 +91,7 @@ Replace:
 ## 🔧 Environment Variables Setup
 
 ### Frontend (.env.local in Vercel)
+
 - `NEXT_PUBLIC_API_URL` - Backend API URL
 - `NEXT_PUBLIC_SITE_URL` - Frontend URL
 - `NEXT_PUBLIC_META_PIXEL_ID` - Meta/Facebook tracking
@@ -96,6 +99,7 @@ Replace:
 - `NEXT_PUBLIC_SNAPCHAT_PIXEL_ID` - Snapchat tracking
 
 ### Backend (Railway/Render)
+
 - `DATABASE_URL` - PostgreSQL connection
 - `SECRET_KEY` - Random secret for tokens
 - `CORS_ORIGINS` - Allow your Vercel domain
@@ -107,6 +111,7 @@ Replace:
 ## 🗄️ Database Setup
 
 ### Option 1: PostgreSQL on Neon.tech (Free)
+
 1. Go to https://neon.tech
 2. Sign up with GitHub
 3. Create new project
@@ -114,6 +119,7 @@ Replace:
 5. Set as `DATABASE_URL` in backend environment
 
 ### Option 2: Supabase (Free PostgreSQL)
+
 1. Go to https://supabase.com
 2. Create new project
 3. Get connection string
@@ -134,18 +140,21 @@ After deployment:
 ## 📱 Features Available
 
 ✅ **Product Management**
+
 - Create, read, update, delete products
 - Add multiple product images
 - Set prices and offers
 - Manage categories and sizes
 
 ✅ **Admin Dashboard**
+
 - Real-time analytics and stats
 - Order tracking
 - Profit calculator
 - Click tracking
 
 ✅ **E-commerce**
+
 - Product listings
 - Shopping cart
 - Checkout flow
@@ -156,16 +165,19 @@ After deployment:
 ## 🐛 Troubleshooting
 
 ### Build fails on Vercel
+
 - Check that `NEXT_PUBLIC_API_URL` is set correctly
 - Ensure frontend build script is correct
 - Clear build cache and retry
 
 ### API calls fail
+
 - Check backend URL in `NEXT_PUBLIC_API_URL`
 - Verify CORS_ORIGINS includes your Vercel domain
 - Check backend environment variables
 
 ### Database connection fails
+
 - Verify `DATABASE_URL` format
 - Ensure database is running
 - Check firewall/network rules
@@ -175,6 +187,7 @@ After deployment:
 ## 📞 Support
 
 For issues:
+
 1. Check backend logs in Render/Railway dashboard
 2. Check frontend logs in Vercel dashboard
 3. Verify all environment variables are set

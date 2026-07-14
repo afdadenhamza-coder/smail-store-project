@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/lib/cart";
 import { Product } from "@/lib/api";
 import Link from "next/link";
@@ -19,14 +19,13 @@ function isBestseller(product: Product): boolean {
 export default function ProductCard({ product }: ProductCardProps) {
   const [selectedSize, setSelectedSize] = useState("");
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [addedAnim, setAddedAnim] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   const { addItem, openCart } = useCart();
   const stock = 5;
 
   useEffect(() => {
-    if (imgRef.current?.complete) {
-      setImageLoaded(true);
-    }
+    if (imgRef.current?.complete) setImageLoaded(true);
   }, []);
 
   const handleAddToCart = () => {
@@ -34,105 +33,215 @@ export default function ProductCard({ product }: ProductCardProps) {
     addItem({
       id: product.id,
       name: product.name,
-      price: product.has_offer && product.offer_price ? product.offer_price : product.price,
+      price:
+        product.has_offer && product.offer_price
+          ? product.offer_price
+          : product.price,
       size: selectedSize,
       image: product.images[0],
     });
-    openCart();
+    setAddedAnim(true);
+    setTimeout(() => {
+      setAddedAnim(false);
+      openCart();
+    }, 650);
   };
+
+  const displayPrice =
+    product.has_offer && product.offer_price
+      ? product.offer_price
+      : product.price;
+  const discountPct =
+    product.has_offer && product.offer_price
+      ? Math.round((1 - product.offer_price / product.price) * 100)
+      : 0;
 
   return (
     <motion.div
-      whileHover={{ y: -6, scale: 1.01 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
-      className="group relative overflow-hidden rounded-[24px] border border-white/10 bg-[#0F0F12] shadow-[0_16px_45px_rgba(0,0,0,0.24)]"
+      whileHover={{ y: -5 }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+      className="group relative flex flex-col overflow-hidden rounded-[22px] border border-white/[0.08] bg-[linear-gradient(165deg,#131318,#0C0C10)] shadow-[0_12px_40px_rgba(0,0,0,0.22)] transition-shadow duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.35)] hover:border-white/[0.13]"
     >
-      <Link href={`/product/${product.id}`} className="block relative overflow-hidden">
-        <div className="aspect-square overflow-hidden bg-[#121216]">
+      {/* Image Area */}
+      <Link
+        href={`/product/${product.id}`}
+        className="relative block overflow-hidden"
+      >
+        <div className="aspect-square overflow-hidden bg-[#0F0F13]">
+          {/* Skeleton */}
+          {!imageLoaded && (
+            <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-white/5 to-transparent" />
+          )}
           <motion.img
             ref={imgRef}
             src={product.images[0]}
             alt={product.name}
-            whileHover={{ scale: 1.08 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className={`h-full w-full object-cover transition duration-700 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+            whileHover={{ scale: 1.07 }}
+            transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className={`h-full w-full object-cover transition-opacity duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
             onLoad={() => setImageLoaded(true)}
           />
+          {/* Gradient overlay on hover */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </div>
 
-        {product.has_offer && product.offer_price && (
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 400, damping: 15 }} className="absolute right-2 top-2 rounded-full bg-red-500/90 px-2.5 py-1 text-[9px] font-bold text-white md:right-3 md:top-3 md:px-3 md:text-[10px]">
-            -{Math.round((1 - product.offer_price / product.price) * 100)}%
-          </motion.div>
-        )}
+        {/* Badges */}
+        <div className="absolute left-2.5 top-2.5 flex flex-col gap-1.5 md:left-3 md:top-3">
+          {discountPct > 0 && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+              className="flex items-center gap-1 rounded-lg bg-gradient-to-r from-red-500 to-rose-500 px-2 py-1 text-[9px] font-bold text-white shadow-[0_4px_12px_rgba(239,68,68,0.35)] md:text-[10px]"
+            >
+              -{discountPct}%
+            </motion.div>
+          )}
+          {isBestseller(product) && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{
+                type: "spring",
+                delay: 0.1,
+                stiffness: 400,
+                damping: 15,
+              }}
+              className="flex items-center gap-1 rounded-lg bg-gradient-to-r from-amber-500 to-orange-400 px-2 py-1 text-[9px] font-bold text-white shadow-[0_4px_12px_rgba(245,158,11,0.35)] md:text-[10px]"
+            >
+              🔥 الأكثر مبيعا
+            </motion.div>
+          )}
+        </div>
 
-        {isBestseller(product) && (
-          <motion.div initial={{ x: 40, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="absolute left-2 top-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-2 py-1 text-[8px] font-bold text-white shadow-sm md:left-3 md:top-3 md:px-2.5 md:text-[9px]">
-            🔥 الأكثر مبيعا
-          </motion.div>
+        {/* Stock urgency */}
+        {stock <= 5 && (
+          <div className="absolute bottom-2.5 right-2.5 flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-black/70 px-2 py-1 backdrop-blur-sm">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" />
+            <span className="text-[9px] font-medium text-red-400">
+              {stock} متبقية
+            </span>
+          </div>
         )}
       </Link>
 
-      <div className="p-3 md:p-4">
-        <Link href={`/product/${product.id}`}>
-          <h3 className="mb-1 text-sm font-semibold leading-tight text-white transition-colors group-hover:text-brand-terracotta md:text-[15px]">
+      {/* Content */}
+      <div className="flex flex-1 flex-col p-3 md:p-4">
+        <Link href={`/product/${product.id}`} className="block">
+          <h3 className="mb-1 text-sm font-bold leading-snug text-white transition-colors group-hover:text-brand-terracotta-light md:text-[15px]">
             {product.name}
           </h3>
         </Link>
-        <Stars rating={product.rating} reviewsCount={product.reviews_count} />
 
-        <div className="mt-2 flex items-center gap-1.5">
-          <span className={`h-1.5 w-1.5 rounded-full ${stock <= 3 ? "animate-pulse bg-red-500" : "bg-amber-400"}`} />
-          <span className={`text-[10px] md:text-[11px] ${stock <= 3 ? "font-medium text-red-400" : "text-amber-400"}`}>
-            متبقي غير {stock} وحدات
-          </span>
+        <div className="mb-2">
+          <Stars rating={product.rating} />
         </div>
 
-        <div className="mt-2 flex items-center gap-2 md:mt-3">
-          {product.has_offer && product.offer_price ? (
-            <>
-              <motion.span initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="text-lg font-bold text-brand-terracotta md:text-xl">
-                {product.offer_price} <span className="text-[10px] md:text-xs">DH</span>
-              </motion.span>
-              <span className="text-[10px] text-text-muted line-through md:text-sm">{product.price} DH</span>
-            </>
-          ) : (
-            <span className="text-lg font-bold text-white md:text-xl">
-              {product.price} <span className="text-[10px] md:text-xs">DH</span>
+        {/* Price */}
+        <div className="mb-3 flex items-baseline gap-2">
+          <span className="text-lg font-black text-white md:text-xl">
+            {displayPrice}
+            <span className="ml-0.5 text-[10px] font-semibold text-text-muted md:text-xs">
+              {" "}
+              DH
+            </span>
+          </span>
+          {discountPct > 0 && (
+            <span className="text-xs text-text-muted line-through">
+              {product.price} DH
             </span>
           )}
         </div>
 
-        <div className="mt-3 space-y-2 md:mt-4 md:space-y-2.5">
-          <div className="flex gap-1.5 md:gap-2">
-            {product.sizes.map((size) => (
-              <motion.button
-                key={size}
-                onClick={() => setSelectedSize(size)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`h-8 w-8 rounded-lg border text-[10px] font-medium transition-colors md:h-9 md:w-9 md:text-[11px] ${
-                  selectedSize === size
-                    ? "border-brand-terracotta bg-brand-terracotta text-white shadow-sm"
-                    : "border-white/10 bg-white/5 text-gray-300 hover:border-brand-terracotta/40 hover:text-white"
-                }`}
-              >
-                {size}
-              </motion.button>
-            ))}
-          </div>
+        {/* Sizes */}
+        <div className="mb-3 flex flex-wrap gap-1.5">
+          {product.sizes.map((size) => (
+            <motion.button
+              key={size}
+              onClick={() => setSelectedSize(size)}
+              whileHover={{ scale: 1.06 }}
+              whileTap={{ scale: 0.94 }}
+              className={`h-8 w-8 rounded-lg border text-[10px] font-semibold transition-all duration-150 md:h-9 md:w-9 md:text-[11px] ${
+                selectedSize === size
+                  ? "border-brand-terracotta bg-brand-terracotta text-white shadow-terracotta-sm"
+                  : "border-white/[0.10] bg-white/[0.04] text-text-secondary hover:border-brand-terracotta/40 hover:bg-white/[0.08] hover:text-white"
+              }`}
+            >
+              {size}
+            </motion.button>
+          ))}
+        </div>
+
+        {/* CTA Button */}
+        <div className="mt-auto">
           <motion.button
             onClick={handleAddToCart}
-            disabled={!selectedSize}
-            whileHover={selectedSize ? { scale: 1.02 } : {}}
-            whileTap={selectedSize ? { scale: 0.98 } : {}}
-            className={`w-full rounded-xl py-2.5 text-sm font-semibold transition-all duration-200 md:py-3 ${
-              selectedSize
-                ? "bg-gradient-to-r from-brand-terracotta to-brand-gold/90 text-white shadow-[0_10px_25px_rgba(192,112,64,0.25)] hover:shadow-[0_12px_32px_rgba(192,112,64,0.35)]"
-                : "cursor-default bg-white/5 text-text-muted"
+            disabled={!selectedSize || addedAnim}
+            whileTap={selectedSize ? { scale: 0.97 } : {}}
+            className={`relative w-full overflow-hidden rounded-xl py-2.5 text-sm font-bold transition-all duration-200 md:py-3 ${
+              selectedSize && !addedAnim
+                ? "bg-gradient-to-r from-brand-terracotta to-brand-terracotta-light text-white shadow-terracotta-sm hover:shadow-terracotta hover:from-brand-terracotta-light hover:to-brand-gold-deep"
+                : addedAnim
+                  ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                  : "cursor-default bg-white/[0.05] text-text-muted"
             }`}
           >
-            {!selectedSize ? "اختيار المقاس" : "اطلب دابا"}
+            <AnimatePresence mode="wait">
+              {addedAnim ? (
+                <motion.span
+                  key="added"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="flex items-center justify-center gap-2"
+                >
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  تمت الإضافة!
+                </motion.span>
+              ) : !selectedSize ? (
+                <motion.span
+                  key="select"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  اختيار المقاس
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="add"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex items-center justify-center gap-1.5"
+                >
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  اطلب دابا
+                </motion.span>
+              )}
+            </AnimatePresence>
           </motion.button>
         </div>
       </div>

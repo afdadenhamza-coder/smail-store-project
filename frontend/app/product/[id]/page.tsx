@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { getProductById, getCrossSellProducts } from "@/data/products";
+import { fetchProduct, fetchProductsByCategory, Product } from "@/lib/api";
 import { useCart } from "@/lib/cart";
 import { fireAllPixels } from "@/lib/pixels";
 import Stars from "@/components/Stars";
@@ -12,12 +12,30 @@ import ReviewsSection from "@/components/ReviewsSection";
 
 export default function ProductPage() {
   const { id } = useParams<{ id: string }>();
-  const product = getProductById(id);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [related, setRelated] = useState<Product[]>([]);
+  const [notFound, setNotFound] = useState(false);
   const { addItem, openCart } = useCart();
   const [selectedSize, setSelectedSize] = useState("");
   const [mainImage, setMainImage] = useState(0);
   const [added, setAdded] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const p = await fetchProduct(id);
+        if (p.is_upsell) { setNotFound(true); return; }
+        setProduct(p);
+        try {
+          const catProducts = await fetchProductsByCategory(p.category || "");
+          setRelated(catProducts.filter((x) => x.id !== p.id).slice(0, 4));
+        } catch {}
+      } catch {
+        setNotFound(true);
+      }
+    })();
+  }, [id]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,16 +45,22 @@ export default function ProductPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (!product || product.is_upsell) {
+  if (notFound || (product === null)) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-2xl font-bold mb-4">المنتج غير موجود</h1>
-        <a href="/" className="text-brand-terracotta underline">العودة للرئيسية</a>
+        {!notFound && !product ? (
+          <div className="text-gray-400">جاري التحميل...</div>
+        ) : (
+          <>
+            <h1 className="text-2xl font-bold mb-4">المنتج غير موجود</h1>
+            <a href="/" className="text-brand-terracotta underline">العودة للرئيسية</a>
+          </>
+        )}
       </div>
     );
   }
 
-  const relatedProducts = getCrossSellProducts(product.id, 4);
+  const relatedProducts = related;
 
 
   const handleAddToCart = () => {
@@ -128,15 +152,7 @@ export default function ProductPage() {
             {product.name}
           </h1>
 
-          <Stars rating={product.rating} reviewsCount={product.reviews_count} />
-
-          {/* Social proof counter */}
-          <div className="mt-1.5 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-[10px] md:text-[11px] text-green-600 font-medium">
-              {product.reviews_count} عميل اشترو هاد المنتوج
-            </span>
-          </div>
+          <Stars rating={product.rating} />
 
           <div className="flex items-baseline gap-2 md:gap-3 mt-4 md:mt-5 mb-5 md:mb-7">
             {product.has_offer && product.offer_price ? (

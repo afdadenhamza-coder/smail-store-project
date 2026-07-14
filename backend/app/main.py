@@ -1,7 +1,9 @@
+import os
 import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from app.config import get_settings
 from app.routers import products, orders, webhooks, admin
 from app.database import engine
@@ -40,6 +42,9 @@ app.include_router(products.router)
 app.include_router(orders.router)
 app.include_router(webhooks.router)
 app.include_router(admin.router)
+
+os.makedirs("uploads", exist_ok=True)
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 
 @app.get("/api/health")

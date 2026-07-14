@@ -3,27 +3,28 @@ interface TrustBadgesProps {
   variant?: "light" | "dark";
 }
 
-export default function TrustBadges({ className = "", variant = "light" }: TrustBadgesProps) {
+export default function TrustBadges({
+  className = "",
+  variant = "light",
+}: TrustBadgesProps) {
   const badges = [
-    { icon: "✓", text: "شهادة الجودة" },
-    { icon: "🚚", text: "التوصيل ف 3-5 أيام" },
+    { icon: "🏆", text: "شهادة الجودة" },
+    { icon: "🚚", text: "توصيل 3-5 أيام" },
     { icon: "💵", text: "الدفع عند الإستلام" },
-    { icon: "🔄", text: "التبديل و الإرجاع" },
+    { icon: "🔄", text: "ضمان 14 يوم" },
   ];
 
   return (
-    <div className={`grid grid-cols-2 gap-3 py-6 md:grid-cols-4 ${className}`}>
+    <div className={`grid grid-cols-2 gap-3 py-4 md:grid-cols-4 ${className}`}>
       {badges.map((badge) => (
         <div
           key={badge.text}
-          className={`flex items-center gap-2.5 rounded-2xl px-4 py-3 text-sm font-medium ${
-            variant === "dark"
-              ? "bg-white/5 text-gray-300"
-              : "border border-white/10 bg-white/5 text-gray-200 shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
-          }`}
+          className="flex items-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3.5 transition-all hover:border-white/[0.13] hover:bg-white/[0.06]"
         >
-          <span className="text-lg">{badge.icon}</span>
-          <span>{badge.text}</span>
+          <span className="text-xl">{badge.icon}</span>
+          <span className="text-sm font-medium text-text-secondary">
+            {badge.text}
+          </span>
         </div>
       ))}
     </div>

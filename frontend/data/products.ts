@@ -14,6 +14,7 @@ export const products: Product[] = [
     description:
       "تيشيرت كلاسيك بجودة عالية. مصنوع من القطن الفاخر 100%، مناسب لجميع الإطلالات. متوفر بعدة مقاسات.",
     is_upsell: false,
+    is_featured: true,
     rating: 4.8,
     reviews_count: 127,
   },
@@ -30,6 +31,7 @@ export const products: Product[] = [
     description:
       "تيشيرت أوفرサイズ بقصة عصرية. مريح و أنيق، مناسب للإطلالات الكاجوال و الستريت وير.",
     is_upsell: false,
+    is_featured: true,
     rating: 4.7,
     reviews_count: 98,
   },
@@ -46,6 +48,7 @@ export const products: Product[] = [
     description:
       "هودي بريميوم بجودة استثنائية. قماش ثقيل و دافئ، مناسب لفصل الشتاء. جيوب أمامية و غطاء رأس.",
     is_upsell: false,
+    is_featured: true,
     rating: 4.9,
     reviews_count: 203,
   },
@@ -62,6 +65,7 @@ export const products: Product[] = [
     description:
       "هودي أوفرサイズ بقصة عصرية. مريح جداً و مناسب للإطلالات الجريئة. جودة عالية و خامة فاخرة.",
     is_upsell: false,
+    is_featured: true,
     rating: 4.6,
     reviews_count: 156,
   },
@@ -78,6 +82,7 @@ export const products: Product[] = [
     description:
       "بنطلون كارغو بقصة عصرية. جيوب متعددة و قماش متين. مناسب للإطلالات اليومية و الستريت وير.",
     is_upsell: false,
+    is_featured: false,
     rating: 4.7,
     reviews_count: 89,
   },
@@ -94,6 +99,7 @@ export const products: Product[] = [
     description:
       "جاكيت دينيم كلاسيك بجودة عالية. تصميم خالد يناسب جميع الإطلالات. متوفر بعدة مقاسات.",
     is_upsell: false,
+    is_featured: false,
     rating: 4.5,
     reviews_count: 67,
   },
@@ -109,6 +115,7 @@ export const products: Product[] = [
     category: "accessories",
     description: "قبعة بريميوم بتصميم عصري. تطريز شعار Smail Store.",
     is_upsell: true,
+    is_featured: false,
     rating: 4.9,
     reviews_count: 45,
   },

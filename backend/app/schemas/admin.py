@@ -197,9 +197,13 @@ class ProductListResponse(BaseModel):
     offer_price: Optional[float] = None
     has_offer: bool = False
     images: list[str] = []
+    sizes: list[str] = ["S", "M", "L", "XL"]
+    description: Optional[str] = None
     category: Optional[str] = None
     is_active: bool = True
     is_featured: bool = False
     is_upsell: bool = False
+    rating: float = 0.0
+    reviews_count: int = 0
     created_at: datetime
     updated_at: datetime

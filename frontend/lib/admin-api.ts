@@ -13,7 +13,10 @@ export function logout(): void {
   sessionStorage.removeItem("admin_token");
 }
 
-async function authFetch(url: string, options: RequestInit = {}): Promise<Response> {
+async function authFetch(
+  url: string,
+  options: RequestInit = {},
+): Promise<Response> {
   const token = getToken();
   if (!token) throw new Error("Not authenticated");
   const headers = { ...options.headers, Authorization: `Bearer ${token}` };
@@ -133,7 +136,10 @@ export interface OrderDetail {
   updated_at: string;
 }
 
-export async function adminLogin(email: string, password: string): Promise<string> {
+export async function adminLogin(
+  email: string,
+  password: string,
+): Promise<string> {
   const res = await fetch(`${API_BASE}/api/admin/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -145,7 +151,10 @@ export async function adminLogin(email: string, password: string): Promise<strin
   return data.token;
 }
 
-export async function fetchStats(startDate?: string, endDate?: string): Promise<DashboardStats> {
+export async function fetchStats(
+  startDate?: string,
+  endDate?: string,
+): Promise<DashboardStats> {
   const params = new URLSearchParams();
   if (startDate) params.set("start_date", startDate);
   if (endDate) params.set("end_date", endDate);
@@ -158,7 +167,9 @@ export async function fetchDetailedStats(): Promise<DetailedStats> {
   return res.json();
 }
 
-export async function calculateProfit(input: ProfitCalcInput): Promise<ProfitCalcOutput> {
+export async function calculateProfit(
+  input: ProfitCalcInput,
+): Promise<ProfitCalcOutput> {
   const res = await authFetch(`${API_BASE}/api/admin/profit/calculate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -191,7 +202,10 @@ export async function fetchOrderDetail(id: string): Promise<OrderDetail> {
   return res.json();
 }
 
-export async function updateOrderStatus(id: string, status: string): Promise<void> {
+export async function updateOrderStatus(
+  id: string,
+  status: string,
+): Promise<void> {
   await authFetch(`${API_BASE}/api/admin/orders/${id}/status`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -209,10 +223,14 @@ export interface Product {
   offer_price?: number;
   has_offer: boolean;
   images: string[];
+  sizes?: string[];
+  description?: string;
   category?: string;
   is_active: boolean;
   is_featured: boolean;
   is_upsell: boolean;
+  rating?: number;
+  reviews_count?: number;
   created_at: string;
   updated_at: string;
 }
@@ -274,15 +292,23 @@ export async function createProduct(data: ProductCreateData): Promise<Product> {
   return res.json();
 }
 
-export async function updateProduct(id: string, data: ProductUpdateData): Promise<Product> {
+export async function updateProduct(
+  id: string,
+  data: ProductUpdateData,
+): Promise<Product> {
   const res = await authFetch(`${API_BASE}/api/admin/products/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
   if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.detail || "Failed to update product");
+    try {
+      const error = await res.json();
+      throw new Error(error.detail || "Failed to update product");
+    } catch (e: any) {
+      if (e.message) throw e;
+      throw new Error(`Server error: ${res.status}`);
+    }
   }
   return res.json();
 }
@@ -297,7 +323,10 @@ export async function deleteProduct(id: string): Promise<void> {
   }
 }
 
-export async function trackClick(path: string, sessionId?: string): Promise<void> {
+export async function trackClick(
+  path: string,
+  sessionId?: string,
+): Promise<void> {
   try {
     await fetch(`${API_BASE}/api/admin/track`, {
       method: "POST",
