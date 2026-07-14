@@ -28,8 +28,10 @@ This guide will help you deploy the Smail Store project to Vercel for free.
 5. **Click Create Database** and wait 1-2 minutes
 6. **Copy the connection string:**
    - Once created, go to the database dashboard
-   - Find "Internal Database URL" and copy it
-   - It should look like: `postgresql+asyncpg://postgres:<password>@<hostname>:5432/smail`
+   - Find **"Internal Database URL"** (NOT External URL - we use Internal since backend is also on Render)
+   - Copy it - it should look like: `postgresql://user:password@hostname:5432/smail`
+   - **⚠️ Important:** Change `postgresql://` to `postgresql+asyncpg://` at the start
+   - **Final URL example:** `postgresql+asyncpg://user:password@hostname:5432/smail`
 7. **Save this URL** - You'll need it for the backend
 
 ---
