@@ -2,6 +2,5 @@
   "version": 2,
   "name": "smail-store",
   "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/.next",
-  "regions": ["ams"]
+  "outputDirectory": "frontend/.next"
 }
