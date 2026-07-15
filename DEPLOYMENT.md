@@ -95,6 +95,7 @@ NEXT_PUBLIC_SITE_URL=https://your-project.vercel.app
 ```
 
 **Replace:**
+
 - `smail-store-backend.onrender.com` with your actual backend URL from Render
 - Other IDs with your actual tracking IDs
 
@@ -120,14 +121,14 @@ NEXT_PUBLIC_SITE_URL=https://your-project.vercel.app
 
 ## 📝 Quick Reference: What Each Variable Does
 
-| Variable | What it is | Where to get it |
-|----------|-----------|-----------------|
-| `DATABASE_URL` | Database connection string | Render PostgreSQL dashboard |
-| `SECRET_KEY` | Secret for sessions/tokens | Generate: `openssl rand -hex 32` |
-| `ADMIN_EMAIL` | Email to login to admin | You decide (e.g., your email) |
-| `ADMIN_PASSWORD` | Password to login to admin | You decide (make it strong) |
-| `CORS_ORIGINS` | Allowed websites | Your Vercel frontend URL |
-| Other tracking IDs | For analytics (optional) | Meta, TikTok, Snapchat accounts |
+| Variable           | What it is                 | Where to get it                  |
+| ------------------ | -------------------------- | -------------------------------- |
+| `DATABASE_URL`     | Database connection string | Render PostgreSQL dashboard      |
+| `SECRET_KEY`       | Secret for sessions/tokens | Generate: `openssl rand -hex 32` |
+| `ADMIN_EMAIL`      | Email to login to admin    | You decide (e.g., your email)    |
+| `ADMIN_PASSWORD`   | Password to login to admin | You decide (make it strong)      |
+| `CORS_ORIGINS`     | Allowed websites           | Your Vercel frontend URL         |
+| Other tracking IDs | For analytics (optional)   | Meta, TikTok, Snapchat accounts  |
 
 ---
 

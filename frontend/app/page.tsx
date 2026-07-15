@@ -95,22 +95,31 @@ export default function HomePage() {
     { slug: "jackets", name: "جواكيط", image: "/images/Jacket.jpg", count: 0 },
   ]);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [activeTab, setActiveTab] = useState<string>("t-shirts");
+  const [tabProducts, setTabProducts] = useState<Product[]>([]);
+
+  const collectionTabs = [
+    { slug: "t-shirts", name: "تيشيرتات" },
+    { slug: "hoodies", name: "هوديات" },
+    { slug: "pants", name: "بناطل" },
+    { slug: "jackets", name: "جواكيط" },
+    { slug: "accessories", name: "اكسسوارات" },
+  ];
 
   useEffect(() => {
     (async () => {
       try {
-        const [allProducts, featuredProducts] = await Promise.all([
+        const [apiProducts, featuredProducts] = await Promise.all([
           fetchProducts(),
           fetchFeaturedProducts(),
         ]);
 
-        // Use featured products if available, otherwise use first 4 regular products
         let productsToShow =
           featuredProducts.length > 0
             ? featuredProducts
-            : allProducts.slice(0, 4);
+            : apiProducts.slice(0, 4);
 
-        // If API returns no products at all, use static data as fallback
         if (productsToShow.length === 0) {
           const { products: staticProducts } = await import("@/data/products");
           const all = staticProducts.filter((p) => !p.is_upsell);
@@ -118,11 +127,11 @@ export default function HomePage() {
         }
 
         setFeatured(productsToShow);
+        setAllProducts(apiProducts.length > 0 ? apiProducts : []);
 
-        // Count products by category
         const counts: Record<string, number> = {};
-        (allProducts.length > 0
-          ? allProducts
+        (apiProducts.length > 0
+          ? apiProducts
           : (await import("@/data/products")).products.filter(
               (p) => !p.is_upsell,
             )
@@ -133,10 +142,10 @@ export default function HomePage() {
           prev.map((c) => ({ ...c, count: counts[c.slug] || 0 })),
         );
       } catch {
-        // fallback: use static data
         const { products: staticProducts } = await import("@/data/products");
         const all = staticProducts.filter((p) => !p.is_upsell);
         setFeatured(all.slice(0, 4));
+        setAllProducts(all);
         const counts: Record<string, number> = {};
         all.forEach((p) => {
           if (p.category) counts[p.category] = (counts[p.category] || 0) + 1;
@@ -147,6 +156,12 @@ export default function HomePage() {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (allProducts.length > 0) {
+      setTabProducts(allProducts.filter(function(p) { return p.category === activeTab && !p.is_upsell; }));
+    }
+  }, [activeTab, allProducts]);
 
   return (
     <div>
@@ -677,6 +692,85 @@ export default function HomePage() {
                 </motion.div>
               ))}
             </motion.div>
+          </div>
+        </section>
+      </AnimatedSection>
+
+      {/* COLLECTION PRODUCTS */}
+      <AnimatedSection delay={0.15}>
+        <section className="py-12 md:py-20">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-8 text-center md:mb-12">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-brand-terracotta">
+                تصفح المجموعات
+              </p>
+              <h2 className="text-2xl font-black text-white md:text-4xl">
+                تسوق حسب القسم
+              </h2>
+              <p className="mt-3 text-sm text-text-secondary">
+                اختر القسم اللي بغيتي وتصفح أجود المنتجات
+              </p>
+            </div>
+
+            <div className="mb-8 flex flex-wrap justify-center gap-2 md:gap-3" dir="rtl">
+              {collectionTabs.map((tab) => (
+                <motion.button
+                  key={tab.slug}
+                  onClick={() => setActiveTab(tab.slug)}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className={`rounded-xl px-5 py-2.5 text-sm font-semibold transition-all ${
+                    activeTab === tab.slug
+                      ? "bg-brand-terracotta text-white shadow-terracotta-sm"
+                      : "border border-white/[0.08] bg-white/[0.05] text-text-secondary hover:border-brand-terracotta/30 hover:bg-brand-terracotta/10 hover:text-white"
+                  }`}
+                >
+                  {tab.name}
+                </motion.button>
+              ))}
+            </div>
+
+            <motion.div
+              key={activeTab}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5"
+            >
+              {tabProducts.length > 0 ? (
+                tabProducts.map((product) => (
+                  <motion.div key={product.id} variants={itemVariants}>
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))
+              ) : (
+                <div className="col-span-full py-12 text-center">
+                  <p className="text-text-muted">ما كاينين منتجات ف هاد القسم حالياً</p>
+                </div>
+              )}
+            </motion.div>
+
+            <div className="mt-8 text-center">
+              <Link
+                href={`/collections/${activeTab}`}
+                className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.05] px-5 py-2.5 text-sm font-medium text-text-secondary transition-all hover:border-brand-terracotta/30 hover:bg-brand-terracotta/10 hover:text-white"
+              >
+                شوف الكل
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </Link>
+            </div>
           </div>
         </section>
       </AnimatedSection>
